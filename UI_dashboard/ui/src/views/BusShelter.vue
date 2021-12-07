@@ -5,7 +5,7 @@
         :led_num="1"
         :updatedTime="led1Time"
         v-on:off="listenToLED1Off"
-        v-on:on="listenToLED1On">
+        v-on:on="listenToLED1On($event)">
         </LEDStatus>
 
         <LEDStatus
@@ -13,7 +13,7 @@
         :led_num="2"
         :updatedTime="led2Time"
         v-on:off="listenToLED2Off"
-        v-on:on="listenToLED2On">
+        v-on:on="listenToLED2On($event)">
         </LEDStatus>
 
     <div class="col-xs-2 col-sm-4 ml-0 mr-0">
@@ -87,22 +87,12 @@ export default {
                 });
         },
 
-        listenToLED1On: function() {
-            console.log("listenToOn in BusShelter.vue");
-            this.pushCharging(PUSH_LED1_URL, 'on');
+        listenToLED1: function(data) {
+            this.pushCharging(PUSH_LED1_URL, data);
         },
 
-        listenToLED1Off: function() {
-            this.pushCharging(PUSH_LED1_URL, 'off');
-        },
-
-        listenToLED2On: function() {
-            console.log("listenToOn in BusShelter.vue");
-            this.pushCharging(PUSH_LED2_URL, 'on');
-        },
-
-        listenToLED2Off: function() {
-            this.pushCharging(PUSH_LED2_URL, 'off');
+        listenToLED2: function(data) {
+            this.pushCharging(PUSH_LED2_URL, data);
         },
 
         listenToAwningOpen: function() {
@@ -120,10 +110,6 @@ export default {
 
     components: {
         LEDStatus
-    },
-
-    mounted: function() {
-        this.listenToServer();
     }
 }
 </script>
