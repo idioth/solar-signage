@@ -58,6 +58,10 @@ export default {
                 console.log("LED Light off");
                 this.$emit("off");
             }
+            else {
+                console.log("LED Light on");
+                this.$emit("on");
+            }
         },
 
         switch2: function(value) {

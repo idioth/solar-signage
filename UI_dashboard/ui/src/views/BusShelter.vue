@@ -4,16 +4,16 @@
         title="LED Light 1 Status"
         :led_num="1"
         :updatedTime="led1Time"
-        v-on:off="listenToLED1Off"
-        v-on:on="listenToLED1On($event)">
+        v-on:off="listenToLED1off"
+        v-on:on="listenToLED1on">
         </LEDStatus>
 
         <LEDStatus
         title="LED Light 2 Status"
         :led_num="2"
         :updatedTime="led2Time"
-        v-on:off="listenToLED2Off"
-        v-on:on="listenToLED2On($event)">
+        v-on:off="listenToLED2off"
+        v-on:on="listenToLED2on">
         </LEDStatus>
 
     <div class="col-xs-2 col-sm-4 ml-0 mr-0">
@@ -87,12 +87,20 @@ export default {
                 });
         },
 
-        listenToLED1: function(data) {
-            this.pushCharging(PUSH_LED1_URL, data);
+        listenToLED1on: function() {
+            this.pushCharging(PUSH_LED1_URL, 'on');
         },
 
-        listenToLED2: function(data) {
-            this.pushCharging(PUSH_LED2_URL, data);
+        listenToLED1off: function() {
+            this.pushCharging(PUSH_LED1_URL, 'off');
+        },
+
+        listenToLED2on: function() {
+            this.pushCharging(PUSH_LED2_URL, 'on');
+        },
+
+        listenToLED2off: function() {
+            this.pushCharging(PUSH_LED2_URL, 'off');
         },
 
         listenToAwningOpen: function() {
