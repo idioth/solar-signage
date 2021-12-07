@@ -3,6 +3,9 @@
 var om2mServer = "http://<om2m_server_address>:8080";
 
 var om2mServer_BATTERY = om2mServer + "/~/in-cse/<battery-fcnt>";
+var om2mServer_LED1 = om2mServer + "/~/in-cse/<led1-cnt>";
+var om2mServer_LED2 = om2mServer + "/~/in-cse/<led2-cnt>";
+var om2mServer_AWNING = om2mServer + "/~/in-cse/<awning-cnt>";
 var om2mServer_GPS = om2mServer + "/~/in-cse/<deviceinfo-fcnt>";
 var om2mServer_AD = om2mServer + "/~/in-cse/<userinfo-fcnt>";
 
@@ -245,6 +248,41 @@ if (loadingApp) {
 
         }
     };
+
+    var pushBusCommandToServer = {
+        doWork: function(sentData, time, type) {
+            const request = require('request');
+            const server_uri = ''
+            console.log("[" + time + "]Push to server, data --> " + sentData);
+            logger.debug("Push to server, data --> " + sentData);
+
+            if(type == "led1") {
+                server_uri = om2mServer_LED1;
+            } else if (type == "led2") {
+                server_uri = om2mServer_LED2;
+            } else if (type == "awning") {
+                server_uri = om2mServer_AWNING;
+            }
+
+            var data = JSON.parse(sentData);
+            request({
+                method: "PUT",
+                uri: server_uri,
+                headers: {
+                    "Accept": "application/json",
+                    "X-M2M-RI": "dashboard",
+                    "X-M2M-Origin": "admin:admin",
+                    "Content-Type": "application/json;ty=4"
+                },
+                json: data
+            },
+            function(error, request, body) {
+                var status = request.statusCode;
+                console.log("[" + time + "] Error Here --> " + error + " || Status Code --> " + status + " || body -->" + body);
+                logger.debug("Error Here --> " + error + " || Status Code --> " + status + " || body --> " + body);
+            });
+        }
+    }
 
     function checkBatteryStatus(batteryLevel) {
         var time = getTime();
@@ -653,82 +691,78 @@ if (loadingApp) {
         }
     });
 
-    app.get('/open', (req, res) => {
+    app.get('/led1', (req, res) => {
         var time = getTime();
-        console.log("[" + time + "]Motor Open Command " + req.body['command']);
-        logger.debug("Motor Open Cmomand " + req.body['command']);
+        console.log("[" + time + "]LED1 Command " + req.body['command']);
+        logger.debug("LED1 Cmomand " + req.body['command']);
 
         sendSuccessfulResponse(res, time);
 
-        var worker = pushCommandToServer;
-        var sentData = '{ "m2m:fcnt" : { "open": 1} }';
+        var worker = pushBusCommandToServer;
 
-        if (req.body['command'] == "0") {
-            sentData = '{ "m2m:fcnt" : { "open": 0} }';
+        if(req.body['command'] == "on") {
+            sentData = '{ "m2m:cin": { "cnf": "led1-status", "con": "on" }}';
+        } else if(req.body['command'] == "off") {
+            sentData = '{ "m2m:cin": { "cnf": "led1-status", "con": "off" }}';
         }
 
         try {
-            console.log("[" + time + "]Push Open Command to Server.");
-            logger.debug("Push Motor Open Command to Server.");
-
-            worker.doWork(sentData, time);
+            console.log("[" + time + "] Push LED1 Command to Server.");
+            worker.doWork(sentData, time, "led1");
         } catch (e) {
-            console.log("[" + time + "]Failed Push Motor Open Command to Server " + e);
-            logger.debug("Failed Push Motor Open Command to Server " + e);
+            console.log("[" + imte + "] Failed Push LED1 Command to Server " + e);
         } finally {
             delete worker;
         }
     });
 
-    app.get('/stop', (req, res) => {
+    app.get('/led2', (req, res) => {
         var time = getTime();
-        console.log("[" + time + "]Motor Stop Command " + req.body['command']);
-        logger.debug("Motor Stop Cmomand " + req.body['command']);
+        console.log("[" + time + "]LED2 Command " + req.body['command']);
+        logger.debug("LED2 Cmomand " + req.body['command']);
 
         sendSuccessfulResponse(res, time);
 
-        var worker = pushCommandToServer;
-        var sentData = '{ "m2m:fcnt" : { "stop": 1} }';
+        var worker = pushBusCommandToServer;
 
-        if (req.body['command'] == "0") {
-            sentData = '{ "m2m:fcnt" : { "stop": 0} }';
+        if(req.body['command'] == "on") {
+            sentData = '{ "m2m:cin": { "cnf": "led2-status", "con": "on" }}';
+        } else if(req.body['command'] == "off") {
+            sentData = '{ "m2m:cin": { "cnf": "led2-status", "con": "off" }}';
         }
 
         try {
-            console.log("[" + time + "]Push Stop Command to Server.");
-            logger.debug("Push Motor Stop Command to Server.");
-
-            worker.doWork(sentData, time);
+            console.log("[" + time + "] Push LED2 Command to Server.");
+            worker.doWork(sentData, time, "led2");
         } catch (e) {
-            console.log("[" + time + "]Failed Push Motor Stop Command to Server " + e);
-            logger.debug("Failed Push Motor Stop Command to Server " + e);
+            console.log("[" + imte + "] Failed Push LED2 Command to Server " + e);
         } finally {
             delete worker;
         }
-    })
+    });
 
-    app.get('/close', (req, res) => {
+    app.get('/awning', (req, res) => {
         var time = getTime();
-        console.log("[" + time + "]Motor Close Command " + req.body['command']);
-        logger.debug("Motor Close Cmomand " + req.body['command']);
+        console.log("[" + time + "]AWNING Command " + req.body['command']);
+        logger.debug("AWNING Cmomand " + req.body['command']);
 
         sendSuccessfulResponse(res, time);
 
-        var worker = pushCommandToServer;
-        var sentData = '{ "m2m:fcnt" : { "close": 1} }';
+        var worker = pushBusCommandToServer;
 
-        if (req.body['command'] == "0") {
-            sentData = '{ "m2m:fcnt" : { "close": 0} }';
+        if(req.body['command'] == "open") {
+            sentData = '{ "m2m:cin": { "cnf": "awning-status", "con": "open" }}';
+        } else if(req.body['command'] == "close") {
+            sentData = '{ "m2m:cin": { "cnf": "awning-status", "con": "close" }}';
+        } else if(req.body['command'] == "stop") {
+            sentData = '{ "m2m:cin": { "cnf": "awning-status", "con": "stop" }}';
         }
 
         try {
-            console.log("[" + time + "]Push Close Command to Server.");
-            logger.debug("Push Motor Close Command to Server.");
-
-            worker.doWork(sentData, time);
+            console.log("[" + time + "] Push AWNING Command to Server.");
+            worker.doWork(sentData, time, "awning");
         } catch (e) {
-            console.log("[" + time + "]Failed Push Motor Close Command to Server " + e);
-            logger.debug("Failed Push Motor Close Command to Server " + e);
+            console.log("[" + imte + "] Failed Push AWNING Command to Server " + e);
         } finally {
             delete worker;
         }

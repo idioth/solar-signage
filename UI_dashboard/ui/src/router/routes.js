@@ -9,6 +9,7 @@ const Menu = resolve => { require.ensure(['../views/dashboard/dashboardcomponent
 //const Ad = resolve => { require.ensure(['../views/dashboard/dashboardcomponent/Ad.vue'], () => { resolve(require('../views/dashboard/dashboardcomponent/Ad.vue')); }); };
 const Ad = resolve => { require.ensure(['../views/dashboard/dashboardcomponent/AdVideo.vue'], () => { resolve(require('../views/dashboard/dashboardcomponent/AdVideo.vue')); }); };
 const DownloadCSV = resolve => { require.ensure(['../views/DownloadCSV.vue'], () => { resolve(require('../views/DownloadCSV.vue')); }); };
+const BusShelter = resolve => { require.ensure(['../views/BusShelter.vue'], () => { resolve(require('../views/BusShelter.vue')); }); };
 
 //const AppFooter = resolve =>{require.ensure(['../layouts/AppFooter.vue'], ()=>{ resolve(require('../layouts/AppFooter.vue')); }); };
 
@@ -95,6 +96,21 @@ export const routes = [
         path: '/downloadcsv',
         name: 'downloadcsv',
         component: DownloadCSV
+    },
+    {
+        path: '/busshelter',
+        name: 'busshelter',
+        components: {
+            default: BusShelter
+        }
+    },
+    {
+        path: '/busshelter/:requestType',
+        name: 'deviceBusShelter',
+        components: {
+            default: BusShelter
+        },
+        props: true
     },
 
     // // UI Components
