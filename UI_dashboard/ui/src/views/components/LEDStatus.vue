@@ -67,6 +67,10 @@ export default {
                 console.log("LED Light on");
                 this.$emit("on");
             }
+            else {
+                console.log("LED Light off");
+                this.$emit("off");
+            }
         }
     },
 

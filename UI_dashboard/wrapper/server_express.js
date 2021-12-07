@@ -252,7 +252,6 @@ if (loadingApp) {
     var pushBusCommandToServer = {
         doWork: function(sentData, time, type) {
             const request = require('request');
-            const server_uri = ''
             console.log("[" + time + "]Push to server, data --> " + sentData);
             logger.debug("Push to server, data --> " + sentData);
 
@@ -266,7 +265,7 @@ if (loadingApp) {
 
             var data = JSON.parse(sentData);
             request({
-                method: "PUT",
+                method: "POST",
                 uri: server_uri,
                 headers: {
                     "Accept": "application/json",
@@ -691,7 +690,7 @@ if (loadingApp) {
         }
     });
 
-    app.get('/led1', (req, res) => {
+    app.post('/led1', (req, res) => {
         var time = getTime();
         console.log("[" + time + "]LED1 Command " + req.body['command']);
         logger.debug("LED1 Cmomand " + req.body['command']);
@@ -716,7 +715,7 @@ if (loadingApp) {
         }
     });
 
-    app.get('/led2', (req, res) => {
+    app.post('/led2', (req, res) => {
         var time = getTime();
         console.log("[" + time + "]LED2 Command " + req.body['command']);
         logger.debug("LED2 Cmomand " + req.body['command']);
@@ -741,7 +740,7 @@ if (loadingApp) {
         }
     });
 
-    app.get('/awning', (req, res) => {
+    app.post('/awning', (req, res) => {
         var time = getTime();
         console.log("[" + time + "]AWNING Command " + req.body['command']);
         logger.debug("AWNING Cmomand " + req.body['command']);
