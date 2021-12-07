@@ -7,6 +7,7 @@
     <ul class="navbar_menu">
       <li><router-link to="/">Home</router-link></li>        
         <li><router-link to="/dashboard">Dashboard</router-link></li>
+        <li><router-link to="/busshelter">BusShelter</router-link></li>
         <li><router-link to="/weather">Weather</router-link></li>
         <li><router-link to="/google-maps">GoogleMap</router-link></li>
         <li><router-link to="/ad">Advertisement</router-link></li>
