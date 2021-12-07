@@ -252,7 +252,6 @@ if (loadingApp) {
     var pushBusCommandToServer = {
         doWork: function(sentData, time, type) {
             const request = require('request');
-            const server_uri = ''
             console.log("[" + time + "]Push to server, data --> " + sentData);
             logger.debug("Push to server, data --> " + sentData);
 
@@ -266,7 +265,7 @@ if (loadingApp) {
 
             var data = JSON.parse(sentData);
             request({
-                method: "PUT",
+                method: "POST",
                 uri: server_uri,
                 headers: {
                     "Accept": "application/json",
