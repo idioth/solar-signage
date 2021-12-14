@@ -3,11 +3,13 @@
 var om2mServer = "http://<om2m_server_address>:8080";
 
 var om2mServer_BATTERY = om2mServer + "/~/in-cse/<battery-fcnt>";
+var om2mServer_GPS = om2mServer + "/~/in-cse/<deviceinfo-fcnt>";
+var om2mServer_AD = om2mServer + "/~/in-cse/<userinfo-fcnt>";
+
+// If you don't use bus shelter, comment this block
 var om2mServer_LED1 = om2mServer + "/~/in-cse/<led1-cnt>";
 var om2mServer_LED2 = om2mServer + "/~/in-cse/<led2-cnt>";
 var om2mServer_AWNING = om2mServer + "/~/in-cse/<awning-cnt>";
-var om2mServer_GPS = om2mServer + "/~/in-cse/<deviceinfo-fcnt>";
-var om2mServer_AD = om2mServer + "/~/in-cse/<userinfo-fcnt>";
 
 var default_AD_URL = "https://www.youtube.com/embed/xLD8oWRmlAE";
 
