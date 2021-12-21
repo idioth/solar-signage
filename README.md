@@ -87,11 +87,11 @@ export const AD_WRAPPER_URL = WRAPPER_URL + "/ad";
 - `OM2M/init_ipe.py`
 
 ```python
-modbus_addr = '<modbus_address>'
-wrapper_addr = '<solar_wrapper_address>'
-
 host = '<om2m_server_address>'
 port = '8080'
+
+modbus_ipe_cnt_name = 'Modbus_IPE'
+solar_ae_cnt_name = 'Solar_AE'
 
 headers = {
     'X-M2M-Origin': '<om2m-id>:<om2m-passwd>',
@@ -99,6 +99,8 @@ headers = {
     'Cache-Control': 'no-cache',
 }
 ```
+
+If you want to change Modbus_IPE and Solar_AE container name, modify that variables.
 
 - `OM2M/init_bus.py`
 
