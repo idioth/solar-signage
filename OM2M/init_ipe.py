@@ -1,7 +1,6 @@
 import sys
 import requests
 
-modbus_addr = '<modbus_address>'
 wrapper_addr = '<solar_wrapper_address>'
 
 host = '<om2m_server_address>'
@@ -132,7 +131,7 @@ def create_solar_fcnt():
         
         create_fcnt('Solar_AE', fcnt, data)
 
-def create_subs():
+def create_subs(wrapper_addr):
     create_sub('Modbus_IPE', 'battery', 'read', f'http://{wrapper_addr}:19998/battery')
     # create_sub('Modbus_IPE', 'battery', 'write', f'http://{wrapper_addr}:3001/write')
     create_sub('Modbus_IPE', 'energyGeneration', 'solar', f'http://{wrapper_addr}:19998/solar')
@@ -147,5 +146,6 @@ if __name__ == "__main__":
     create_ae('solar-ae', 'Solar_AE')
     create_solar_fcnt()
 
-    input('\n[*] If you want create subscriptions, press any keys (It requires \'solar wrapper\' is running.)')
-    create_subs()
+    print('\n[*] If you want create subscriptions, input wrapper ip address. (It requires \'solar wrapper\' is running.)')
+    wrapper_addr = input('> ')
+    create_subs(wrapper_addr)
