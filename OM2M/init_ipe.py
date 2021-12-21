@@ -1,10 +1,11 @@
 import sys
 import requests
 
-wrapper_addr = '<solar_wrapper_address>'
-
 host = '<om2m_server_address>'
 port = '8080'
+
+modbus_ipe_cnt_name = 'Modbus_IPE'
+solar_ae_cnt_name = 'Solar_AE'
 
 headers = {
     'X-M2M-Origin': '<om2m-id>:<om2m-passwd>',
@@ -103,7 +104,7 @@ def create_ipe_fcnt():
                 }
             }
 
-        create_fcnt('Modbus_IPE', fcnt, data)
+        create_fcnt(modbus_ipe_cnt_name, fcnt, data)
 
 def create_solar_fcnt():
     fcnts = ['deviceInfo', 'userInfo']
@@ -129,21 +130,21 @@ def create_solar_fcnt():
                 }
             }
         
-        create_fcnt('Solar_AE', fcnt, data)
+        create_fcnt(solar_ae_cnt_name, fcnt, data)
 
 def create_subs(wrapper_addr):
-    create_sub('Modbus_IPE', 'battery', 'read', f'http://{wrapper_addr}:19998/battery')
-    # create_sub('Modbus_IPE', 'battery', 'write', f'http://{wrapper_addr}:3001/write')
-    create_sub('Modbus_IPE', 'energyGeneration', 'solar', f'http://{wrapper_addr}:19998/solar')
-    create_sub('Modbus_IPE', 'energyConsumption', 'load', f'http://{wrapper_addr}:19998/load')
+    create_sub(modbus_ipe_cnt_name, 'battery', 'read', f'http://{wrapper_addr}:19998/battery')
+    # create_sub(modbus_ipe_cnt_name, 'battery', 'write', f'http://{wrapper_addr}:3001/write')
+    create_sub(modbus_ipe_cnt_name, 'energyGeneration', 'solar', f'http://{wrapper_addr}:19998/solar')
+    create_sub(modbus_ipe_cnt_name, 'energyConsumption', 'load', f'http://{wrapper_addr}:19998/load')
 
 if __name__ == "__main__":
     # create Modbus_IPE AE, fcnts
-    create_ae('modbus-ipe', 'Modbus_IPE')
+    create_ae('modbus-ipe', modbus_ipe_cnt_name)
     create_ipe_fcnt()
 
     # create Solar AE, fcnts
-    create_ae('solar-ae', 'Solar_AE')
+    create_ae('solar-ae', solar_ae_cnt_name)
     create_solar_fcnt()
 
     print('\n[*] If you want create subscriptions, input wrapper ip address. (It requires \'solar wrapper\' is running.)')
