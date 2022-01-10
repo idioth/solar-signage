@@ -9,6 +9,7 @@ export const PUSH_DISCHARGING_URL = WRAPPER_URL + "/discharging";
 export const PUSH_LED1_URL = WRAPPER_URL + "/led1";
 export const PUSH_LED2_URL = WRAPPER_URL + "/led2";
 export const PUSH_AWNING_URL = WRAPPER_URL + "/awning";
+export const PUSH_INVERTER_URL = WRAPPER_URL + "/inverter";
 
 export const STARTTIME_WRAPPER_URL = WRAPPER_URL + "/starttime";
 

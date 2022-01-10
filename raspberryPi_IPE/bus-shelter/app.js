@@ -22,6 +22,12 @@ const stop = new Gpio(22, 'out');
 const open = new Gpio(23, 'out');
 const close = new Gpio(24, 'out');
 
+/*
+DC-AC Inverter
+GPIO 18: Inverter ON/OFF
+*/
+const inverter = new Gpio(18, 'out');
+
 const app = express();
 const port = 3002;
 app.use(bodyParser.json());
@@ -89,6 +95,21 @@ app.post('/awning', async function(req, res) {
     res.sendStatus(200);
 });
 
+app.post('/inverter', async function(req, res) {
+    if(req.body['m2m:sgn'].hasOwnProperty('m2m:nev')) {
+        let status = req.body['m2m:sgn']['m2m:nev']['m2m:rep']['m2m:cin']['con']
+        if(status === 'on') {
+            inverter.writeSync(1);
+            console.log('[DC-AC INVERTER ON]');
+        }
+        else if(status === 'off') {
+            inverter.writeSync(0);
+            console.log('[DC-AC INVERTER OFF]');
+        }
+    }
+    res.sendStatus(200);
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 process.on('SIGINT', _ => {
@@ -98,5 +119,6 @@ process.on('SIGINT', _ => {
     stop.unexport();
     open.unexport();
     close.unexport();
+    inverter.unexport();
     process.exit(0);
 });

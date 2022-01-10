@@ -16,6 +16,13 @@
         v-on:on="listenToLED2on">
         </LEDStatus>
 
+        <InverterStatus
+        title="Inverter Status"
+        :updatedTime="InverterTime"
+        v-on:off="listenToInverterOff"
+        v-on:on="listenToInverterOn">
+        </InverterStatus>
+
     <div class="col-xs-2 col-sm-4 ml-0 mr-0">
         <div class="card">
             <div class="card-top">
@@ -42,11 +49,13 @@
 </template>
 
 <script>
-import { UI_SOCKET_URL, PUSH_LED1_URL, PUSH_LED2_URL, PUSH_AWNING_URL } from '../../config';
+import { UI_SOCKET_URL, PUSH_LED1_URL, PUSH_LED2_URL, PUSH_AWNING_URL, PUSH_INVERTER_URL } from '../../config';
 import LEDStatus from './components/LEDStatus.vue';
+import InverterStatus from './components/InverterStatus.vue';
 
 import io from 'socket.io-client';
 import axios from 'axios';
+
 
 const socket = io(UI_SOCKET_URL);
 
@@ -59,10 +68,11 @@ export default {
             led1Status: false,
             led2Status: false,
             awningStatus: "Closed",
+            InverterStatus: false,
 
             led1Time: "",
             led2Time: "",
-            led3Time: ""
+            InverterTime: ""
         }
     },
 
@@ -113,11 +123,20 @@ export default {
 
         listenToAwningStop: function() {
             this.pushCharging(PUSH_AWNING_URL, 'stop');
+        },
+
+        listenToInverterOn: function() {
+            this.pushCharging(PUSH_INVERTER_URL, 'on');
+        },
+
+        listenToInverterOff: function() {
+            this.pushCharging(PUSH_INVERTER_URL, 'off');
         }
     },
 
     components: {
-        LEDStatus
+        LEDStatus,
+        InverterStatus
     }
 }
 </script>

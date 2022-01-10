@@ -10,6 +10,7 @@ var om2mServer_AD = om2mServer + "/~/in-cse/<userinfo-fcnt>";
 var om2mServer_LED1 = om2mServer + "/~/in-cse/<led1-cnt>";
 var om2mServer_LED2 = om2mServer + "/~/in-cse/<led2-cnt>";
 var om2mServer_AWNING = om2mServer + "/~/in-cse/<awning-cnt>";
+var om2mServer_INVERTER = om2mServer + "/~/in-cse/<inverter-cnt>";
 
 var default_AD_URL = "https://www.youtube.com/embed/xLD8oWRmlAE";
 
@@ -263,6 +264,8 @@ if (loadingApp) {
                 server_uri = om2mServer_LED2;
             } else if (type == "awning") {
                 server_uri = om2mServer_AWNING;
+            } else if (type == "inverter") {
+                server_uri = om2mServer_INVERTER;
             }
 
             var data = JSON.parse(sentData);
@@ -764,6 +767,31 @@ if (loadingApp) {
             worker.doWork(sentData, time, "awning");
         } catch (e) {
             console.log("[" + imte + "] Failed Push AWNING Command to Server " + e);
+        } finally {
+            delete worker;
+        }
+    });
+
+    app.post('/inverter', (req, res) => {
+        var time = getTime();
+        console.log("[" + time + "]INVERTER Command " + req.body['command']);
+        logger.debug("INVERTER Cmomand " + req.body['command']);
+
+        sendSuccessfulResponse(res, time);
+
+        var worker = pushBusCommandToServer;
+
+        if(req.body['command'] == "on") {
+            sentData = '{ "m2m:cin": { "cnf": "inverter-status", "con": "on" }}';
+        } else if(req.body['command'] == "off") {
+            sentData = '{ "m2m:cin": { "cnf": "inverter-status", "con": "off" }}';
+        }
+
+        try {
+            console.log("[" + time + "] Push INVERTER Command to Server.");
+            worker.doWork(sentData, time, "inverter");
+        } catch (e) {
+            console.log("[" + imte + "] Failed Push INVERTER Command to Server " + e);
         } finally {
             delete worker;
         }
