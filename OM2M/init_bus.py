@@ -11,7 +11,7 @@ headers = {
     'Content-Type': '',
     'Cache-Control': 'no-cache',
 }
-containers = ['led1', 'led2', 'awning']
+containers = ['led1', 'led2', 'awning', 'inverter']
 
 def init_script():
     # create ae
